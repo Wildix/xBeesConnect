@@ -53,7 +53,7 @@ export class SearchResultItemBuilder implements ISearchResultItemBuilder {
   }
 
   picture(picture: string) {
-    console.debug("picture setup is not supported yet")
+    console.debug("picture setup is not supported yet", picture, "is ignored")
     return this;
   }
 

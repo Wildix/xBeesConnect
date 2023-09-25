@@ -12,3 +12,13 @@ yarn release:patch
 ```
 git push origin --tags
 ```
+#### all in one
+```
+yarn release:patch & git push origin & git push origin --tags
+```
+#### check remote tags
+```
+git ls-remote --tags 
+```
+
+
