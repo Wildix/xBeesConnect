@@ -5,33 +5,25 @@
 yarn create vite <my-react-app> --template react-swc-ts
 ```
 
-## Start
-Import xBeesConnect library into iframe embeddable app:
+## Install
+Setup xBeesConnect library from https://github.com/Wildix/xBeesConnect:
 
-```html
-<head>
- <script src="https://app.x-bees.com/integrations/xBeesConnect.js"></script>
-</head>
 ```
-Use other environments adding subdomain dev,stage,XBS-0000 etc
-```html
-<head>
- <script src="https://stage.app.x-bees.com/integrations/xBeesConnect.js"></script>
-</head>
+yarn add https://github.com/Wildix/xBeesConnect.git#v1.0.6
 ```
 
-Use `new xBeesConnect()` in your JS for communication with xBees
+Use `xBeesConnect()` in your JS for communication with xBees
 send requests to xBees:
 ```js
 // send requests to xBees
-new xBeesConnect().getContext().then((response: ResponseFromChannel) => {
+xBeesConnect().getContext().then((response: ResponseFromChannel) => {
     // do smth with context data, for example fetch the data and show the view
 })
 ```
 listen to xBees events:
 ```js
 // listen to xBees events
-new xBeesConnect().addEventListener('xBeesUseTheme', (theme: string) => {
+xBeesConnect().addEventListener('xBeesUseTheme', (theme: string) => {
     // change the view according to the theme
 });
 ```
@@ -44,7 +36,7 @@ Sends to xBees signal that iFrame is ready to be shown. iFrame should send it wh
 ```js
 // for example in React it's ok to send it when the root component is mounted
 useEffect(() => {
-    new xBeesConnect().ready();
+    xBeesConnect().ready();
 }, []);
 ```
 
@@ -84,7 +76,7 @@ Retrieves current xBees context data. Data may be different depending on context
 
 ```js
 useEffect(() => {
-    new xBeesConnect().getContext().then((response) => {
+    xBeesConnect().getContext().then((response) => {
     // do smth with context data, for example fetch the data and show the view
 }), []);
 ```
@@ -95,7 +87,7 @@ Retrieves currently opened in xBees contact data
 
 ```js
 useEffect(() => {
-    new xBeesConnect().getCurrentContact().then((response) => {
+    xBeesConnect().getCurrentContact().then((response) => {
     // do smth with contact data, for example fetch additional data and show the view
 }), []);
 ```
@@ -105,7 +97,7 @@ useEffect(() => {
 Retrieves current theme mode (light or dark)
 
 ```js
-new xBeesConnect().getThemeMode().then((resp: any) => {
+xBeesConnect().getThemeMode().then((resp: any) => {
     changeTheme(resp.payload);
 })
 ```
@@ -116,7 +108,7 @@ new xBeesConnect().getThemeMode().then((resp: any) => {
 Retrieves the version of xBeesConnect
 
 ```js
-const version = new xBeesConnect().version();
+const version = xBeesConnect().version();
 console.log("Current xBeesConnect version: ", version);
 ```
 
@@ -126,7 +118,7 @@ Sends a request to xBees to start a call with the number
 
 ```js
 useEffect(() => {
-    new xBeesConnect().startCall().then((response) => {
+    xBeesConnect().startCall().then((response) => {
     // after call is started "response" message is 'call started'
 }, []);
 ```
@@ -141,7 +133,7 @@ try {
     })
 } catch (e) {
     if (isAuthorizationExpired) {
-        new xBeesConnect().reboot()
+        xBeesConnect().reboot()
     }
 }
 ```
@@ -155,7 +147,7 @@ useEffect(() => {
     const height = document.body.clientHeight;
     const width = document.documentElement.scrollWidth;
     
-    new xBeesConnect().setViewport({ height, width });
+    xBeesConnect().setViewport({ height, width });
 }, []);
 ```
 
@@ -164,7 +156,7 @@ useEffect(() => {
 Sends a request to xBees to put a string to the user's clipboard
 
 ```js
-new xBeesConnect().toClipboard(somestring);
+xBeesConnect().toClipboard(somestring);
 ```
 
 ### `addEventListener()`
@@ -174,7 +166,7 @@ Starts listening for one of the events of the xBees and handles with the provide
 ```js
 useEffect(() => {
     setViewport();
-    const connect = new xBeesConnect();
+    const connect = xBeesConnect();
     
     connect.addEventListener("xBeesAddCall", processAddCall);
     connect.addEventListener("xBeesTerminateCall", processRemoveCall);
@@ -193,7 +185,7 @@ Stops listen for one of the events of the xBees with this particular callback
 ```js
 useEffect(() => {
     setViewport();
-    const connect = new xBeesConnect();
+    const connect = xBeesConnect();
     
     connect.addEventListener("xBeesAddCall", processAddCall);
     connect.addEventListener("xBeesTerminateCall", processRemoveCall);

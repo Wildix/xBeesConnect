@@ -13,8 +13,8 @@ import {
 } from './types';
 import {xBeesConnectNative} from './xBeesConnectNative';
 import {xBeesConnectWeb} from './xBeesConnectWeb';
+import packageJson from '../package.json';
 
-const VERSION = '0.2';
 /**
  * xBeesConnectLib provides functionality of communication between xBees and integrated web applications via iFrame or ReactNative WebView
  *
@@ -48,7 +48,7 @@ export class xBeesConnectLib implements IxBeesConnect {
   }
 
   public version() {
-    return VERSION;
+    return packageJson.version;
   }
 
   getSearchResponseCreator() {

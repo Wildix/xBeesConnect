@@ -5,4 +5,14 @@ import {xBeesConnectLib} from './src/xBeesConnectLib';
   window.xBeesConnect = xBeesConnectLib;
 })();
 
-export default xBeesConnectLib;
+let xBeesConnect: any = null;
+
+const connectProvider = () => {
+  if (!xBeesConnect) {
+    //@ts-ignore
+    xBeesConnect = new xBeesConnectLib();
+  }
+  return xBeesConnect;
+}
+
+export default xBeesConnect;
