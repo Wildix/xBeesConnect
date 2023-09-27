@@ -44,7 +44,7 @@ export class xBeesConnectLib implements IxBeesConnect {
   }
 
   public async ready() {
-    return this.sendAsync({type: XBeesResponseType.READY});
+    return this.sendAsync({type: XBeesResponseType.READY, payload: { version: this.version() }});
   }
 
   public version() {
