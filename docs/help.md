@@ -10,12 +10,20 @@ For development purposes use **_beta_** tag versioning
 ```
 yarn version --preid beta --prerelease
 ```
+#### all in one
+```
+yarn version --preid beta --prerelease && git push origin && git push origin --tags
+```
 
 
 ### Release
 #### Create a Git tag using the version
 ```
 yarn release:patch
+```
+#### all in one
+```
+yarn release:patch && git push origin && git push origin --tags
 ```
 
 ### Push
