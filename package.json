@@ -1,6 +1,6 @@
 {
   "name": "@xbees/connect",
-  "version": "1.0.10-beta.3",
+  "version": "1.0.10-beta.4",
   "description": "xBeesConnect library provides easy communication between xBees and integrated web applications",
   "private": false,
   "main": "index.js",
