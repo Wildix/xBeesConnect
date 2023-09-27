@@ -8,7 +8,7 @@ import {
   ISearchResponseCreator,
   IxBeesConnect,
   ListenerCallback, Message,
-  ResponseFromChannel,
+  ResponseFromChannel, ThemeChangeListenerCallback,
   XBeesResponseType,
 } from './types';
 import {xBeesConnectNative} from './xBeesConnectNative';
@@ -69,6 +69,10 @@ export class xBeesConnectLib implements IxBeesConnect {
 
   public async getThemeMode(): Promise<ResponseFromChannel> {
     return this.sendAsync({type: XBeesResponseType.THEME_MODE});
+  }
+
+  public async getTheme(): Promise<ResponseFromChannel> {
+    return this.sendAsync({type: XBeesResponseType.THEME});
   }
 
   public async startCall(phoneNumber: string): Promise<ResponseFromChannel> {
@@ -178,7 +182,7 @@ export class xBeesConnectLib implements IxBeesConnect {
     this.addEventListener("xBeesGetSearchResult", callback);
   }
 
-  onThemeChange(callback: ListenerCallback): void {
+  onThemeChange(callback: ThemeChangeListenerCallback): void {
     this.addEventListener("xBeesUseTheme", callback);
   }
 }

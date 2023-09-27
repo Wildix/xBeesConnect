@@ -36,6 +36,7 @@ export enum XBeesResponseType {
   CONTEXT = 'xBeesContext',
   CURRENT_CONTACT = 'xBeesCurrentContact',
   THEME_MODE = 'xBeesThemeMode',
+  THEME = 'xBeesTheme',
   START_CALL = 'xBeesStartCall',
   VIEW_PORT = 'xBeesViewPort',
   REBOOT = 'xBeesReboot',
@@ -46,6 +47,8 @@ export enum XBeesResponseType {
 }
 
 export type xBeesMessageType = XBeesResponseType | XBeesEventType;
+type ThemeChangePayload = { mode: "light" | "dark", themeOptions?: { typography?: unknown, palette?: unknown } };
+export type ThemeChangeListenerCallback = (payload: ThemeChangePayload | unknown) => void;
 export type ListenerCallback = (payload: unknown) => void;
 
 export interface IReactNativeWebView {
@@ -84,6 +87,9 @@ export interface IxBeesConnect {
    * Retrieves current theme mode (light or dark) */
   getThemeMode: () => Promise<ResponseFromChannel>;
   /**
+   * Retrieves current theme with mode (light or dark) and theme options like typography settings and palette */
+  getTheme: () => Promise<ResponseFromChannel>;
+  /**
    * Sends request to xBees to start a call with the number */
   startCall: (phoneNumber: string) => Promise<ResponseFromChannel>;
   /**
@@ -112,7 +118,7 @@ export interface IxBeesConnect {
   removeEventListener: (eventName: string, callback: ListenerCallback) => void;
   /**
    * Starts listen for the events of changing theme and handle with the provided callback */
-  onThemeChange: (callback: ListenerCallback) => void;
+  onThemeChange: (callback: ThemeChangeListenerCallback) => void;
   /**
    * Starts listen for the events of changing pbx token and handle with the provided callback */
   onPbxTokenChange: (callback: ListenerCallback) => void;
