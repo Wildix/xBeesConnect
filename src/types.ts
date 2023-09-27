@@ -110,6 +110,24 @@ export interface IxBeesConnect {
   /**
    * Stops listen for one of the events of the xBees with this particular callback */
   removeEventListener: (eventName: string, callback: ListenerCallback) => void;
+  /**
+   * Starts listen for the events of changing theme and handle with the provided callback */
+  onThemeChange: (callback: ListenerCallback) => void;
+  /**
+   * Starts listen for the events of changing pbx token and handle with the provided callback */
+  onPbxTokenChange: (callback: ListenerCallback) => void;
+  /**
+   * Starts listen for the events of searching contacts and handle autosuggestion with the provided callback */
+  onSearchContacts: (callback: ListenerCallback) => void;
+  /**
+   * Starts listen for the events of starting the call and handle with the provided callback */
+  onCallStarted: (callback: ListenerCallback) => void;
+  /**
+   * Starts listen for the events of ending the call and handle with the provided callback */
+  onCallEnded: (callback: ListenerCallback) => void;
+  /**
+   * Removes particular callback from handling events */
+  off: (callback: ListenerCallback) => void;
 }
 
 export interface ISearchResponseCreator {

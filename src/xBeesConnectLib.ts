@@ -120,9 +120,9 @@ export class xBeesConnectLib implements IxBeesConnect {
     }
   }
 
-  public removeEventListener(eventName: string, callback: ListenerCallback): void {
+  public removeEventListener(eventName: string | undefined, callback: ListenerCallback): void {
     this.listeners = this.listeners.filter(
-      ({eventName: _eventName, callback: _callback}) => !(eventName === _eventName && Object.is(callback, _callback)),
+      ({eventName: _eventName, callback: _callback}) => !(Object.is(callback, _callback) && (!eventName ? true : eventName === _eventName)),
     );
 
     if (this.useSubscription && !this.listeners.length) {
@@ -156,5 +156,29 @@ export class xBeesConnectLib implements IxBeesConnect {
         callback(payload);
       }
     });
+  }
+
+  off(callback: ListenerCallback): void {
+    this.removeEventListener(undefined, callback);
+  }
+
+  onCallEnded(callback: ListenerCallback): void {
+    this.addEventListener("xBeesTerminateCall", callback);
+  }
+
+  onCallStarted(callback: ListenerCallback): void {
+    this.addEventListener("xBeesAddCall", callback);
+  }
+
+  onPbxTokenChange(callback: ListenerCallback): void {
+    this.addEventListener("xBeesPbxToken", callback);
+  }
+
+  onSearchContacts(callback: ListenerCallback): void {
+    this.addEventListener("xBeesGetSearchResult", callback);
+  }
+
+  onThemeChange(callback: ListenerCallback): void {
+    this.addEventListener("xBeesUseTheme", callback);
   }
 }
