@@ -29,7 +29,7 @@ xBeesConnect().addEventListener('xBeesUseTheme', (theme: string) => {
 ```
 # API Guide
 ## Initialization
-### `ready()`
+#### `ready()`
 
 Sends to xBees signal that iFrame is ready to be shown. iFrame should send it when the application starts and is ready.
 
@@ -40,9 +40,9 @@ useEffect(() => {
 }, []);
 ```
 
-### `isAuthorized: (payload: string) => Promise<ResponseFromChannel>`
+#### `isAuthorized: (payload: string) => Promise<ResponseFromChannel>`
 pushes to xBees message that user is authorized and no more actions required
-### `isNotAuthorized: (payload: string) => Promise<ResponseFromChannel>`
+#### `isNotAuthorized: (payload: string) => Promise<ResponseFromChannel>`
 pushes to xBees message that user actions required
 ```js
 const [user] = useUserContext();
@@ -60,17 +60,42 @@ useEffect(() => {
 ```
 
 ## Contacts search
-### `getSearchResponseCreator: () => ISearchResponseCreator`
+#### `getSearchResponseCreator: () => ISearchResponseCreator`
 Retrieves an object to create a search response
 
-### `SearchResultItemBuilder: () => ISearchResultItemBuilder`
+#### `SearchResultItemBuilder: () => ISearchResultItemBuilder`
 Retrieves an object to create a search response item
 
-### `getSearchResult: (payload: ContactShape[]) => Promise<ResponseFromChannel>`
+#### `getSearchResult: (payload: ContactShape[]) => Promise<ResponseFromChannel>`
 Sends a response to xBees for search results
+#### `onSearchContacts: (callback: ListenerCallback) => void;`
+Starts listen for the events of searching contacts and handle autosuggestion with the provided callback
+```js
+
+xBeesConnect().onSearchContacts(async (query: string) => {
+    await xBeesConnect().getSearchResponseCreator().prepareResponse(
+        filteredContacts.map((record: any) => connect.SearchResultItemBuilder()
+            .id(record.id)
+            .name(record.name)
+            .email(record.email)
+            .phone(record.phone || record.home || record.mobile || record.office || record.home_mobile || record.fax)
+            .extension(record.extension)
+            .homeNumber(record.home)
+            .mobileNumber(record.mobile)
+            .officeNumber(record.office)
+            .homeMobileNumber(record.home_mobile)
+            .faxNumber(record.fax)
+            .organization(record.organization)
+            .create())
+        ).sendResponse();
+    } catch (e) {
+        console.error(e)
+    }
+})
+```
 
 ## Context
-### `getContext(): Promise<Response>`
+#### `getContext(): Promise<Response>`
 
 Retrieves current xBees context data. Data may be different depending on context (TBD description of context variants)
 
@@ -81,7 +106,7 @@ useEffect(() => {
 }), []);
 ```
 
-### `getCurrentContact(): Promise<Response>`
+#### `getCurrentContact(): Promise<Response>`
 
 Retrieves currently opened in xBees contact data
 
@@ -92,7 +117,7 @@ useEffect(() => {
 }), []);
 ```
 
-### `getThemeMode(): Promise<Response>`
+#### `getThemeMode(): Promise<Response>`
 
 Retrieves current theme mode (light or dark)
 
@@ -102,8 +127,61 @@ xBeesConnect().getThemeMode().then((resp: any) => {
 })
 ```
 
+#### `getTheme(): Promise<Response>`
+
+Retrieves current theme mode and theme options
+
+```js
+xBeesConnect().getTheme().then((resp: any) => {
+    const {mode, themeOptions: {typography, palette}} = resp.payload;
+    changeTheme(mode, typography, palette);
+})
+```
+
+#### `onThemeChange: (callback: ThemeChangeListenerCallback) => void;`
+Starts listen for the events of changing theme and handle with the provided callback
+```js
+xBeesConnect().onThemeChange((payload: any) => {
+    const {mode, themeOptions: {typography, palette}} = payload;
+    changeTheme(mode, typography, palette);
+})
+```
+
+#### `onPbxTokenChange: (callback: ListenerCallback) => void;`
+Starts listen for the events of changing pbx token and handle with the provided callback
+```js
+xBeesConnect().onPbxTokenChange((jwt: string) => {
+    auth.setToken(jwt);
+})
+```
+
+#### `onCallStarted: (callback: ListenerCallback) => void;`
+Starts listen for the events of starting the call and handle with the provided callback
+```js
+xBeesConnect().onCallStarted(() => {
+})
+```
+#### `onCallEnded: (callback: ListenerCallback) => void;`
+Starts listen for the events of ending the call and handle with the provided callback
+```js
+xBeesConnect().onCallEnded(() => {
+})
+```
+#### `off: (callback: ListenerCallback) => void;`
+Removes particular callback from handling events
+```js
+const onThemeChangeCallback = (payload: any) => {
+    const {mode, themeOptions: {typography, palette}} = payload;
+    changeTheme(mode, typography, palette);
+};
+
+xBeesConnect().onThemeChange(onThemeChangeCallback); // add subscription listener
+xBeesConnect().off(onThemeChangeCallback) // remove subscribed listener
+```
+
+
 ## Others
-### `version(): string`
+#### `version(): string`
 
 Retrieves the version of xBeesConnect
 
@@ -112,7 +190,7 @@ const version = xBeesConnect().version();
 console.log("Current xBeesConnect version: ", version);
 ```
 
-### `startCall(phoneNumber: string)`
+#### `startCall(phoneNumber: string)`
 
 Sends a request to xBees to start a call with the number
 
@@ -123,7 +201,7 @@ useEffect(() => {
 }, []);
 ```
 
-### `reboot()`
+#### `reboot()`
 
 Sends a request to xBees to restart the iFrame, reload with actual params and token
 ```js
@@ -138,7 +216,7 @@ try {
 }
 ```
 
-### `setViewport({height: number; width: number})`
+#### `setViewport({height: number; width: number})`
 
 Sends a request to xBees about the current frame size change
 
@@ -151,7 +229,7 @@ useEffect(() => {
 }, []);
 ```
 
-### `toClipboard(payload: string)`
+#### `toClipboard(payload: string)`
 
 Sends a request to xBees to put a string to the user's clipboard
 
@@ -159,7 +237,7 @@ Sends a request to xBees to put a string to the user's clipboard
 xBeesConnect().toClipboard(somestring);
 ```
 
-### `addEventListener()`
+#### `addEventListener()`
 
 Starts listening for one of the events of the xBees and handles with the provided callback
 
@@ -178,7 +256,7 @@ useEffect(() => {
 }, []);
 ```
 
-### `removeEventListener()`
+#### `removeEventListener()`
 
 Stops listen for one of the events of the xBees with this particular callback
 
