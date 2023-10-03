@@ -11,7 +11,7 @@ export class xBeesConnectNative implements IxBeesSend {
 
   public async sendAsync(data: any): Promise<ResponseFromChannel> {
     if (!this.target) {
-      return Promise.reject('xBeesConnect should be wrapped within iframe');
+      return Promise.reject('xBeesConnect should be wrapped within iframe to perform the connection');
     }
     return this.send(this.target, data);
   }
