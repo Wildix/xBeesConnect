@@ -9,8 +9,6 @@ export class xBeesConnectWeb implements IxBeesSend {
   }
 
   public async sendAsync(data: any): Promise<ResponseFromChannel> {
-    console.log("target", this.target, {window});
-    debugger;
     if (!this.target || this.target === window) {
       return Promise.reject('xBeesConnect should be wrapped within iframe to perform the connection');
     }
