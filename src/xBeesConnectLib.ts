@@ -25,6 +25,7 @@ export class xBeesConnectLib implements IxBeesConnect {
 
   private listeners: IListener[] = [];
   private useSubscription = false;
+  private searchQuery: string | null = null;
   private readonly iframeId: string | null = null;
   private readonly searchResponseCreator: ISearchResponseCreator;
 
@@ -100,7 +101,13 @@ export class xBeesConnectLib implements IxBeesConnect {
   }
 
   public async getSearchResult(payload: ContactShape[]): Promise<ResponseFromChannel> {
-    return this.sendAsync({type: XBeesResponseType.SEARCH_RESULT, payload});
+    return this.sendAsync({
+      type: XBeesResponseType.SEARCH_RESULT,
+      payload: {
+        query: this.searchQuery,
+        contacts: payload,
+      },
+    });
   }
 
   public addEventListener(eventName: string, callback: ListenerCallback): void {
@@ -147,11 +154,28 @@ export class xBeesConnectLib implements IxBeesConnect {
     }
   }
 
+  private onMessageMiddleware(data: Message): void {
+    const {type, payload} = data;
+
+    switch (type) {
+      case 'xBeesGetSearchResult':
+        if (isString(payload)) {
+          this.searchQuery = payload as string;
+        }
+        break;
+
+      default:
+        break;
+    }
+  }
+
   private onMessage(message: unknown) {
     const data = this.parseMessage(message);
     if (!data) {
       return;
     }
+
+    this.onMessageMiddleware(data);
 
     const {type, payload} = data;
 
