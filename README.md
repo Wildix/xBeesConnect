@@ -1,17 +1,14 @@
 # Integrations
 ## Add new integration
-### Vite
-```
-yarn create vite <my-react-app> --template react-swc-ts
-```
+You can use template project for start developing your integration https://github.com/Wildix/iframe-xbees-template-react
 
-## Install
-Setup xBeesConnect library from https://github.com/Wildix/xBeesConnect:
-
+## Add xBeesConnect library
+Install xBeesConnect library from https://github.com/Wildix/xBeesConnect:
+use latest version
 ```
-yarn add https://github.com/Wildix/xBeesConnect.git#v1.0.6
+yarn add https://github.com/Wildix/xBeesConnect.git#vX.X.X
 ```
-
+### xBeesConnect listeners
 Use `xBeesConnect()` in your JS for communication with xBees
 send requests to xBees:
 ```js
@@ -27,7 +24,7 @@ xBeesConnect().addEventListener('xBeesUseTheme', (theme: string) => {
     // change the view according to the theme
 });
 ```
-# API Guide
+# xBeesConnect API Guide
 ## Initialization
 #### `ready()`
 
