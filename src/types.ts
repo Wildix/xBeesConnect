@@ -25,6 +25,7 @@ export type ResponseFromChannel = {
 
 export enum XBeesEventType {
   GET_SEARCH_RESULT = 'xBeesGetSearchResult',
+  GET_CONTACTS_AUTOSUGGEST = 'xBeesGetContactsAutosuggest',
   ADD_CALL = 'xBeesAddCall',
   TERMINATE_CALL = 'xBeesTerminateCall',
   USE_THEME = 'xBeesUseTheme',
@@ -44,6 +45,7 @@ export enum XBeesResponseType {
   NOT_AUTHORIZED = 'xBeesNotAuthorized',
   AUTHORIZED = 'xBeesAuthorized',
   SEARCH_RESULT = 'xBeesSearchResult',
+  CONTACTS_AUTOSUGGEST = 'xBeesContactsAutosuggest',
 }
 
 export type xBeesMessageType = XBeesResponseType | XBeesEventType;
@@ -101,9 +103,13 @@ export interface IxBeesConnect {
   /**
    * Sends request to xBees to put string to the users clipboard */
   toClipboard: (payload: string) => Promise<ResponseFromChannel>;
+  // TODO remove this after multiiframe search will released
   /**
    * Sends a request to xBees for search results */
   getSearchResult: (payload: ContactShape[]) => Promise<ResponseFromChannel>;
+  /**
+   * Sends a request to xBees for contacts autosuggest */
+  getContactsAutosuggest: (payload: ContactShape[]) => Promise<ResponseFromChannel>;
   /**
    * pushes to xBees message that user is authorized and no more actions required */
   isAuthorized: (payload: string) => Promise<ResponseFromChannel>;
@@ -138,6 +144,8 @@ export interface IxBeesConnect {
 
 export interface ISearchResponseCreator {
   prepareResponse(contacts: ContactShape[]): void;
+  sendResponseV2(): void;
+  // TODO remove this after multiiframe search will released
   sendResponse(): void;
 }
 

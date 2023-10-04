@@ -100,9 +100,17 @@ export class xBeesConnectLib implements IxBeesConnect {
     return this.sendAsync({type: XBeesResponseType.AUTHORIZED, payload});
   }
 
+  // TODO remove this after multiiframe search will released
   public async getSearchResult(payload: ContactShape[]): Promise<ResponseFromChannel> {
     return this.sendAsync({
       type: XBeesResponseType.SEARCH_RESULT,
+      payload: payload,
+    });
+  }
+
+  public async getContactsAutosuggest(payload: ContactShape[]): Promise<ResponseFromChannel> {
+    return this.sendAsync({
+      type: XBeesResponseType.CONTACTS_AUTOSUGGEST,
       payload: {
         query: this.searchQuery,
         contacts: payload,
@@ -158,7 +166,7 @@ export class xBeesConnectLib implements IxBeesConnect {
     const {type, payload} = data;
 
     switch (type) {
-      case 'xBeesGetSearchResult':
+      case 'xBeesGetContactsAutosuggest':
         if (isString(payload)) {
           this.searchQuery = payload as string;
         }
@@ -166,7 +174,7 @@ export class xBeesConnectLib implements IxBeesConnect {
 
       default:
         break;
-    }
+      }
   }
 
   private onMessage(message: unknown) {

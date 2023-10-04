@@ -14,6 +14,7 @@ export class SearchResponseCreator implements ISearchResponseCreator {
     return this;
   }
 
+  // TODO remove this after multiiframe search will released
   sendResponse() {
     let hasNonValidContact = false;
     const filteredContacts = this.response.filter((contact) => {
@@ -27,5 +28,20 @@ export class SearchResponseCreator implements ISearchResponseCreator {
       console.error('There are contacts without email or phone number fields');
     }
     this.connect.getSearchResult(filteredContacts);
+  }
+
+  sendResponseV2() {
+    let hasNonValidContact = false;
+    const filteredContacts = this.response.filter((contact) => {
+      if (contact.name && contact.id && (contact.phone || contact.email)) {
+        return true;
+      }
+      hasNonValidContact = true;
+      return false;
+    });
+    if (hasNonValidContact) {
+      console.error('There are contacts without email or phone number fields');
+    }
+    this.connect.getContactsAutosuggest(filteredContacts);
   }
 }
