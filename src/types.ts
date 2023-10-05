@@ -49,7 +49,7 @@ export enum XBeesResponseType {
 }
 
 export type xBeesMessageType = XBeesResponseType | XBeesEventType;
-type ThemeChangePayload = { mode: "light" | "dark", themeOptions?: { typography?: unknown, palette?: unknown } };
+export type ThemeChangePayload = { mode: "light" | "dark", themeOptions?: { typography?: unknown, palette?: unknown } };
 export type ThemeChangeListenerCallback = (payload: ThemeChangePayload | unknown) => void;
 export type ListenerCallback = (payload: unknown) => void;
 
@@ -62,6 +62,8 @@ export interface IListener {
   callback: ListenerCallback;
 }
 
+export type WorkVariants = 'info-frame' | 'daemon' | 'dialog';
+
 export interface IxBeesSend {
   sendAsync(data: any): Promise<ResponseFromChannel>;
 }
@@ -73,6 +75,13 @@ export interface IxBeesConnect {
   /**
    * Retrieves the version of xBeesConnect */
   version: () => string;
+  /**
+   * Determines x-bees is using this connect for messages only and this integration will not be shown on UI */
+  isDaemon: () => boolean;
+  /**
+   * Determines x-bees is using this connect for representation on UI and this integration will be shown on UI
+   * this opposite to {@link isDaemon} */
+  showsUi: () => boolean;
   /**
    * Retrieves an object to create a search response */
   getSearchResponseCreator: () => ISearchResponseCreator;

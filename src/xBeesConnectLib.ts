@@ -8,7 +8,7 @@ import {
   ISearchResponseCreator,
   IxBeesConnect,
   ListenerCallback, Message,
-  ResponseFromChannel, ThemeChangeListenerCallback,
+  ResponseFromChannel, ThemeChangeListenerCallback, WorkVariants,
   XBeesResponseType,
 } from './types';
 import {xBeesConnectNative} from './xBeesConnectNative';
@@ -27,11 +27,13 @@ export class xBeesConnectLib implements IxBeesConnect {
   private useSubscription = false;
   private searchQuery: string | null = null;
   private readonly iframeId: string | null = null;
+  private readonly variant: WorkVariants | null = null;
   private readonly searchResponseCreator: ISearchResponseCreator;
 
   constructor() {
     const params = new URLSearchParams(window.location.search);
     this.iframeId = params.get('iframeId');
+    this.variant = params.get('variant') as WorkVariants;
     // @ts-expect-error window.ReactNativeWebView will be provided by ReactNative WebView
     this.worker = window.ReactNativeWebView ? new xBeesConnectNative() : new xBeesConnectWeb();
     this.searchResponseCreator = new SearchResponseCreator(this);
@@ -50,6 +52,14 @@ export class xBeesConnectLib implements IxBeesConnect {
 
   public version() {
     return packageJson.version;
+  }
+
+  public isDaemon() {
+    return this.variant === 'daemon';
+  }
+
+  public showsUi() {
+    return !this.isDaemon();
   }
 
   getSearchResponseCreator() {
