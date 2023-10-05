@@ -25,7 +25,7 @@ export type ResponseFromChannel = {
 
 export enum XBeesEventType {
   GET_SEARCH_RESULT = 'xBeesGetSearchResult',
-  GET_CONTACTS_AUTOSUGGEST = 'xBeesGetContactsAutosuggest',
+  GET_CONTACTS_AUTO_SUGGEST = 'xBeesGetContactsAutoSuggest',
   ADD_CALL = 'xBeesAddCall',
   TERMINATE_CALL = 'xBeesTerminateCall',
   USE_THEME = 'xBeesUseTheme',
@@ -68,7 +68,7 @@ export interface IxBeesSend {
 
 export interface IxBeesConnect {
   /**
-   * Sends to xBees signal that iFrame is ready to be shown. iFrame should send it when the application starts and ready */
+   * Sends to x-bees signal that iFrame is ready to be shown. iFrame should send it when the application starts and ready */
   ready: () => Promise<ResponseFromChannel>;
   /**
    * Retrieves the version of xBeesConnect */
@@ -80,10 +80,10 @@ export interface IxBeesConnect {
    * Retrieves an object to create a search response item */
   SearchResultItemBuilder: () => ISearchResultItemBuilder;
   /**
-   * Retrieves current xBees context data */
+   * Retrieves current x-bees context data */
   getContext: () => Promise<ResponseFromChannel>;
   /**
-   * Retrieves current opened in xBees contact data */
+   * Retrieves current opened in x-bees contact data */
   getCurrentContact: () => Promise<ResponseFromChannel>;
   /**
    * Retrieves current theme mode (light or dark) */
@@ -92,35 +92,37 @@ export interface IxBeesConnect {
    * Retrieves current theme with mode (light or dark) and theme options like typography settings and palette */
   getTheme: () => Promise<ResponseFromChannel>;
   /**
-   * Sends request to xBees to start a call with the number */
+   * Sends request to x-bees to start a call with the number */
   startCall: (phoneNumber: string) => Promise<ResponseFromChannel>;
   /**
-   * Sends request to xBees to restart the iFrame, reload with actual params and token */
+   * Sends request to x-bees to restart the iFrame, reload with actual params and token */
   reboot: () => Promise<ResponseFromChannel>;
   /**
-   * Sends request to xBees about current frame size change */
+   * Sends request to x-bees about current frame size change */
   setViewport: (payload: {height: number; width: number}) => Promise<ResponseFromChannel>;
   /**
-   * Sends request to xBees to put string to the users clipboard */
+   * Sends request to x-bees to put string to the users clipboard */
   toClipboard: (payload: string) => Promise<ResponseFromChannel>;
   // TODO remove this after multiiframe search will released
   /**
-   * Sends a request to xBees for search results */
+   * Sends a response to x-bees for search results
+   * @deprecated
+   * */
   getSearchResult: (payload: ContactShape[]) => Promise<ResponseFromChannel>;
   /**
-   * Sends a request to xBees for contacts autosuggest */
-  getContactsAutosuggest: (payload: ContactShape[]) => Promise<ResponseFromChannel>;
+   * Sends a response to x-bees for contacts autoSuggest */
+  getContactsAutoSuggest: (payload: ContactShape[]) => Promise<ResponseFromChannel>;
   /**
-   * pushes to xBees message that user is authorized and no more actions required */
+   * pushes to x-bees message that user is authorized and no more actions required */
   isAuthorized: (payload: string) => Promise<ResponseFromChannel>;
   /**
-   * pushes to xBees message that user actions required */
+   * pushes to x-bees message that user actions required */
   isNotAuthorized: (payload: string) => Promise<ResponseFromChannel>;
   /**
-   * Starts listen for one of the events of the xBees and handle with the provided callback */
+   * Starts listen for one of the events of the x-bees and handle with the provided callback */
   addEventListener: (eventName: string, callback: ListenerCallback) => void;
   /**
-   * Stops listen for one of the events of the xBees with this particular callback */
+   * Stops listen for one of the events of the x-bees with this particular callback */
   removeEventListener: (eventName: string, callback: ListenerCallback) => void;
   /**
    * Starts listen for the events of changing theme and handle with the provided callback */
@@ -143,9 +145,23 @@ export interface IxBeesConnect {
 }
 
 export interface ISearchResponseCreator {
+  /**
+   * Sends response to x-bees
+   */
   prepareResponse(contacts: ContactShape[]): void;
-  sendResponseV2(): void;
-  // TODO remove this after multiiframe search will released
+
+  /**
+   * Sends response to x-bees
+   */
+  send(): void;
+
+  /**
+   * Sends response to x-bees
+   *
+   * @deprecated: use {@link SearchResponseCreator.send} instead
+   * TODO remove this after multiiframe search will released
+   */
+  // deprecated TODO remove this after multiiframe search will released
   sendResponse(): void;
 }
 

@@ -84,7 +84,7 @@ xBeesConnect().onSearchContacts(async (query: string) => {
             .faxNumber(record.fax)
             .organization(record.organization)
             .create())
-        ).sendResponse();
+        ).send();
     } catch (e) {
         console.error(e)
     }

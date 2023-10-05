@@ -108,7 +108,7 @@ export class xBeesConnectLib implements IxBeesConnect {
     });
   }
 
-  public async getContactsAutosuggest(payload: ContactShape[]): Promise<ResponseFromChannel> {
+  public async getContactsAutoSuggest(payload: ContactShape[]): Promise<ResponseFromChannel> {
     return this.sendAsync({
       type: XBeesResponseType.CONTACTS_AUTOSUGGEST,
       payload: {
@@ -166,7 +166,7 @@ export class xBeesConnectLib implements IxBeesConnect {
     const {type, payload} = data;
 
     switch (type) {
-      case 'xBeesGetContactsAutosuggest':
+      case 'xBeesGetContactsAutoSuggest':
         if (isString(payload)) {
           this.searchQuery = payload as string;
         }
