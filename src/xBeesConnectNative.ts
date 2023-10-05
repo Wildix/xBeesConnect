@@ -21,13 +21,7 @@ export class xBeesConnectNative implements IxBeesSend {
       const channel = new MessageChannel();
       const listener = (event: any) => {
         try {
-          let parsedData;
-          try {
-            parsedData = JSON.parse(event.data);
-          } catch (e) {
-            return;
-          }
-
+          const parsedData = JSON.parse(event.data);
           if (parsedData?.type === payload.type) {
             clearTimeout(timeout);
             window.removeEventListener('message', listener);
@@ -38,7 +32,7 @@ export class xBeesConnectNative implements IxBeesSend {
             }
           }
         } catch (e) {
-          target.postMessage('log on receive response Error ' + e);
+          console.error("on receive response Error", e);
         }
       };
 
@@ -48,7 +42,7 @@ export class xBeesConnectNative implements IxBeesSend {
         channel.port1.close();
         window.removeEventListener('message', listener);
 
-        rej({errorMessage: 'timeout'});
+        rej({errorMessage: 'timeout', type: payload.type});
       }, this.timeout);
 
       target.postMessage(JSON.stringify(payload));

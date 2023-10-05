@@ -20,7 +20,7 @@ export class xBeesConnectWeb implements IxBeesSend {
       const channel = new MessageChannel();
       const timeout = setTimeout(() => {
         channel.port1.close();
-        rej({errorMessage: 'timeout'});
+        rej({errorMessage: 'timeout', type: payload.type});
       }, this.timeout);
 
       channel.port1.onmessage = ({data}) => {
