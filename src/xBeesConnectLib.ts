@@ -4,6 +4,7 @@ import {SearchResponseCreator} from './searchResponse/searchResponseCreator';
 import {SearchResultItemBuilder} from './searchResponse/searchResultItembuilder';
 import {
   ContactShape,
+  IAutoSuggestResult,
   IListener,
   ISearchResponseCreator,
   IxBeesConnect,
@@ -25,7 +26,6 @@ export class xBeesConnectLib implements IxBeesConnect {
 
   private listeners: IListener[] = [];
   private useSubscription = false;
-  private searchQuery: string | null = null;
   private readonly iframeId: string | null = null;
   private readonly variant: WorkVariants | null = null;
   private readonly searchResponseCreator: ISearchResponseCreator;
@@ -118,13 +118,10 @@ export class xBeesConnectLib implements IxBeesConnect {
     });
   }
 
-  public async getContactsAutoSuggest(payload: ContactShape[]): Promise<ResponseFromChannel> {
+  public async getContactsAutoSuggest(payload: IAutoSuggestResult): Promise<ResponseFromChannel> {
     return this.sendAsync({
       type: XBeesResponseType.CONTACTS_AUTOSUGGEST,
-      payload: {
-        query: this.searchQuery,
-        contacts: payload,
-      },
+      payload: payload,
     });
   }
 
@@ -172,28 +169,11 @@ export class xBeesConnectLib implements IxBeesConnect {
     }
   }
 
-  private onMessageMiddleware(data: Message): void {
-    const {type, payload} = data;
-
-    switch (type) {
-      case 'xBeesGetContactsAutoSuggest':
-        if (isString(payload)) {
-          this.searchQuery = payload as string;
-        }
-        break;
-
-      default:
-        break;
-      }
-  }
-
   private onMessage(message: unknown) {
     const data = this.parseMessage(message);
     if (!data) {
       return;
     }
-
-    this.onMessageMiddleware(data);
 
     const {type, payload} = data;
 

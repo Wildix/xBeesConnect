@@ -4,6 +4,7 @@ export class SearchResponseCreator implements ISearchResponseCreator {
   private connect: IxBeesConnect;
   private contacts: ContactShape[] = [];
   private response: ContactShape[] = [];
+  private query: string = '';
   private hasNonValidContact = false;
 
   constructor(connect: IxBeesConnect) {
@@ -23,8 +24,9 @@ export class SearchResponseCreator implements ISearchResponseCreator {
     }
   }
 
-  prepareResponse(contacts: ContactShape[]) {
+  prepareResponse(contacts: ContactShape[], query: string) {
     this.contacts = contacts;
+    this.query = query;
     this.createValidatedResponse()
     return this;
   }
@@ -34,6 +36,9 @@ export class SearchResponseCreator implements ISearchResponseCreator {
   }
 
   send() {
-    this.connect.getContactsAutoSuggest(this.response);
+    this.connect.getContactsAutoSuggest({
+      contacts: this.response,
+      query: this.query
+    });
   }
 }

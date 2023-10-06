@@ -64,6 +64,11 @@ export interface IListener {
 
 export type WorkVariants = 'info-frame' | 'daemon' | 'dialog';
 
+export interface IAutoSuggestResult {
+  contacts: ContactShape[];
+  query: string;
+}
+
 export interface IxBeesSend {
   sendAsync(data: any): Promise<ResponseFromChannel>;
 }
@@ -120,7 +125,7 @@ export interface IxBeesConnect {
   getSearchResult: (payload: ContactShape[]) => Promise<ResponseFromChannel>;
   /**
    * Sends a response to x-bees for contacts autoSuggest */
-  getContactsAutoSuggest: (payload: ContactShape[]) => Promise<ResponseFromChannel>;
+  getContactsAutoSuggest: (payload: IAutoSuggestResult) => Promise<ResponseFromChannel>;
   /**
    * pushes to x-bees message that user is authorized and no more actions required */
   isAuthorized: (payload: string) => Promise<ResponseFromChannel>;
@@ -157,7 +162,7 @@ export interface ISearchResponseCreator {
   /**
    * Sends response to x-bees
    */
-  prepareResponse(contacts: ContactShape[]): void;
+  prepareResponse(contacts: ContactShape[], query: string): void;
 
   /**
    * Sends response to x-bees
