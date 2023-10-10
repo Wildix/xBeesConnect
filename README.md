@@ -47,7 +47,7 @@ const [user] = useUserContext();
 useEffect(() => {
     const connect = connectProvider();
     const isAuthorized = !!user;
-    
+
     if (isAuthorized) {
       void connect?.isAuthorized?.();
     } else {
@@ -99,8 +99,9 @@ Retrieves current xBees context data. Data may be different depending on context
 ```js
 useEffect(() => {
     xBeesConnect().getContext().then((response) => {
-    // do smth with context data, for example fetch the data and show the view
-}), []);
+        // do smth with context data, for example fetch the data and show the view
+    })
+}, []);
 ```
 
 #### `getCurrentContact(): Promise<Response>`
@@ -110,8 +111,9 @@ Retrieves currently opened in xBees contact data
 ```js
 useEffect(() => {
     xBeesConnect().getCurrentContact().then((response) => {
-    // do smth with contact data, for example fetch additional data and show the view
-}), []);
+        // do smth with contact data, for example fetch additional data and show the view
+    })
+}, []);
 ```
 
 #### `getThemeMode(): Promise<Response>`
@@ -194,7 +196,8 @@ Sends a request to xBees to start a call with the number
 ```js
 useEffect(() => {
     xBeesConnect().startCall().then((response) => {
-    // after call is started "response" message is 'call started'
+        // after call is started "response" message is 'call started'
+    }
 }, []);
 ```
 
@@ -221,7 +224,7 @@ Sends a request to xBees about the current frame size change
 useEffect(() => {
     const height = document.body.clientHeight;
     const width = document.documentElement.scrollWidth;
-    
+
     xBeesConnect().setViewport({ height, width });
 }, []);
 ```
@@ -242,10 +245,10 @@ Starts listening for one of the events of the xBees and handles with the provide
 useEffect(() => {
     setViewport();
     const connect = xBeesConnect();
-    
+
     connect.addEventListener("xBeesAddCall", processAddCall);
     connect.addEventListener("xBeesTerminateCall", processRemoveCall);
-    
+
     return () => {
         connect.removeEventListener("xBeesUseCall", processAddCall);
         connect.removeEventListener("xBeesTerminateCall", processRemoveCall);
@@ -261,7 +264,7 @@ Stops listen for one of the events of the xBees with this particular callback
 useEffect(() => {
     setViewport();
     const connect = xBeesConnect();
-    
+
     connect.addEventListener("xBeesAddCall", processAddCall);
     connect.addEventListener("xBeesTerminateCall", processRemoveCall);
 
