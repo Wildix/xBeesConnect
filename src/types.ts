@@ -24,6 +24,7 @@ export type ResponseFromChannel = {
 };
 
 export enum XBeesEventType {
+  /** @deprecated */
   GET_SEARCH_RESULT = 'xBeesGetSearchResult',
   GET_CONTACTS_AUTO_SUGGEST = 'xBeesGetContactsAutoSuggest',
   ADD_CALL = 'xBeesAddCall',
@@ -45,7 +46,7 @@ export enum XBeesResponseType {
   NOT_AUTHORIZED = 'xBeesNotAuthorized',
   AUTHORIZED = 'xBeesAuthorized',
   SEARCH_RESULT = 'xBeesSearchResult',
-  CONTACTS_AUTOSUGGEST = 'xBeesContactsAutosuggest',
+  CONTACTS_AUTO_SUGGEST = 'xBeesContactsAutoSuggest',
 }
 
 export type xBeesMessageType = XBeesResponseType | XBeesEventType;

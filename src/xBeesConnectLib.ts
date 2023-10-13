@@ -9,7 +9,7 @@ import {
   ISearchResponseCreator,
   IxBeesConnect,
   ListenerCallback, Message,
-  ResponseFromChannel, ThemeChangeListenerCallback, WorkVariants,
+  ResponseFromChannel, ThemeChangeListenerCallback, WorkVariants, XBeesEventType,
   XBeesResponseType,
 } from './types';
 import {xBeesConnectNative} from './xBeesConnectNative';
@@ -120,7 +120,7 @@ export class xBeesConnectLib implements IxBeesConnect {
 
   public async getContactsAutoSuggest(payload: IAutoSuggestResult): Promise<ResponseFromChannel> {
     return this.sendAsync({
-      type: XBeesResponseType.CONTACTS_AUTOSUGGEST,
+      type: XBeesResponseType.CONTACTS_AUTO_SUGGEST,
       payload: payload,
     });
   }
@@ -189,22 +189,26 @@ export class xBeesConnectLib implements IxBeesConnect {
   }
 
   onCallEnded(callback: ListenerCallback): void {
-    this.addEventListener("xBeesTerminateCall", callback);
+    this.addEventListener(XBeesEventType.TERMINATE_CALL, callback);
   }
 
   onCallStarted(callback: ListenerCallback): void {
-    this.addEventListener("xBeesAddCall", callback);
+    this.addEventListener(XBeesEventType.ADD_CALL, callback);
   }
 
   onPbxTokenChange(callback: ListenerCallback): void {
-    this.addEventListener("xBeesPbxToken", callback);
+    this.addEventListener(XBeesEventType.PBX_TOKEN, callback);
   }
 
   onSearchContacts(callback: ListenerCallback): void {
-    this.addEventListener("xBeesGetSearchResult", callback);
+    this.addEventListener(XBeesEventType.GET_SEARCH_RESULT, callback);
+  }
+
+  onSuggestContacts(callback: ListenerCallback): void {
+    this.addEventListener(XBeesEventType.GET_CONTACTS_AUTO_SUGGEST, callback);
   }
 
   onThemeChange(callback: ThemeChangeListenerCallback): void {
-    this.addEventListener("xBeesUseTheme", callback);
+    this.addEventListener(XBeesEventType.USE_THEME, callback);
   }
 }
