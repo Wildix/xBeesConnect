@@ -1,23 +1,21 @@
 # Integrations
-## Add new integration
-You can use template project for start developing your integration https://github.com/Wildix/iframe-xbees-template-react
+## Add a new integration
+You can use the following template project to start developing your integration: https://github.com/Wildix/iframe-xbees-template-react
 
 ## Add xBeesConnect library
-Install xBeesConnect library from https://github.com/Wildix/xBeesConnect:
-use latest version
+Install xBeesConnect library from this project. Use the latest version:
 ```
 yarn add https://github.com/Wildix/xBeesConnect.git#vX.X.X
 ```
 ### xBeesConnect listeners
-Use `xBeesConnect()` in your JS for communication with xBees
-send requests to xBees:
+Use `xBeesConnect()` in your JS for communication with x-bees to send requests to x-bees:
 ```js
-// send requests to xBees
+// send requests to x-bees
 xBeesConnect().getContext().then((response: ResponseFromChannel) => {
     // do smth with context data, for example fetch the data and show the view
 })
 ```
-listen to xBees events:
+Listen to x-bees events:
 ```js
 // listen to xBees events
 xBeesConnect().addEventListener('xBeesUseTheme', (theme: string) => {
@@ -28,7 +26,7 @@ xBeesConnect().addEventListener('xBeesUseTheme', (theme: string) => {
 ## Initialization
 #### `ready()`
 
-Sends to xBees signal that iFrame is ready to be shown. iFrame should send it when the application starts and is ready.
+Sends the signal to x-bees that iFrame is ready to be shown. iFrame should send it when the application starts and is ready.
 
 ```js
 // for example in React it's ok to send it when the root component is mounted
@@ -38,9 +36,10 @@ useEffect(() => {
 ```
 
 #### `isAuthorized: (payload: string) => Promise<ResponseFromChannel>`
-pushes to xBees message that user is authorized and no more actions required
+Sends the message to x-bees that the user is authorized and no more actions are required.
+
 #### `isNotAuthorized: (payload: string) => Promise<ResponseFromChannel>`
-pushes to xBees message that user actions required
+Sends the message to x-bees that user actions are required:
 ```js
 const [user] = useUserContext();
 
@@ -58,32 +57,32 @@ useEffect(() => {
 
 ## Contacts search
 #### `getSearchResponseCreator: () => ISearchResponseCreator`
-Retrieves an object to create a search response
+Retrieves an object to create a search response.
 
 #### `SearchResultItemBuilder: () => ISearchResultItemBuilder`
-Retrieves an object to create a search response item
+Retrieves an object to create a search response item.
 
 #### `getSearchResult: (payload: ContactShape[]) => Promise<ResponseFromChannel>`
-Sends a response to xBees for search results
+Sends a response to x-bees for search results.
 #### `onSearchContacts: (callback: ListenerCallback) => void;`
-Starts listen for the events of searching contacts and handle autosuggestion with the provided callback
+Starts listening for the events of contacts search and handles auto-suggestion with the provided callback:
 ```js
-
-xBeesConnect().onSearchContacts(async (query: string) => {
-    await xBeesConnect().getSearchResponseCreator().prepareResponse(
-        filteredContacts.map((record: any) => connect.SearchResultItemBuilder()
-            .id(record.id)
-            .name(record.name)
-            .email(record.email)
-            .phone(record.phone || record.home || record.mobile || record.office || record.home_mobile || record.fax)
-            .extension(record.extension)
-            .homeNumber(record.home)
-            .mobileNumber(record.mobile)
-            .officeNumber(record.office)
-            .homeMobileNumber(record.home_mobile)
-            .faxNumber(record.fax)
-            .organization(record.organization)
-            .create())
+xBeesConnect().onSuggestContacts(async (query: string) => {
+    try {
+        await xBeesConnect().getSearchResponseCreator().prepareResponse(
+            filteredContacts.map((record: any) => connect.SearchResultItemBuilder()
+                .id(record.id)
+                .name(record.name)
+                .email(record.email)
+                .phone(record.phone || record.home || record.mobile || record.office || record.home_mobile || record.fax)
+                .extension(record.extension)
+                .homeNumber(record.home)
+                .mobileNumber(record.mobile)
+                .officeNumber(record.office)
+                .homeMobileNumber(record.home_mobile)
+                .faxNumber(record.fax)
+                .organization(record.organization)
+                .create())
         ).send();
     } catch (e) {
         console.error(e)
@@ -94,7 +93,7 @@ xBeesConnect().onSearchContacts(async (query: string) => {
 ## Context
 #### `getContext(): Promise<Response>`
 
-Retrieves current xBees context data. Data may be different depending on context (TBD description of context variants)
+Retrieves current x-bees context data. The data may be different depending on context.
 
 ```js
 useEffect(() => {
@@ -106,7 +105,7 @@ useEffect(() => {
 
 #### `getCurrentContact(): Promise<Response>`
 
-Retrieves currently opened in xBees contact data
+Retrieves contact data currently opened in x-bees.
 
 ```js
 useEffect(() => {
@@ -118,7 +117,7 @@ useEffect(() => {
 
 #### `getThemeMode(): Promise<Response>`
 
-Retrieves current theme mode (light or dark)
+Retrieves current theme mode (light or dark):
 
 ```js
 xBeesConnect().getThemeMode().then((resp: any) => {
@@ -128,7 +127,7 @@ xBeesConnect().getThemeMode().then((resp: any) => {
 
 #### `getTheme(): Promise<Response>`
 
-Retrieves current theme mode and theme options
+Retrieves current theme mode and theme options:
 
 ```js
 xBeesConnect().getTheme().then((resp: any) => {
@@ -138,7 +137,7 @@ xBeesConnect().getTheme().then((resp: any) => {
 ```
 
 #### `onThemeChange: (callback: ThemeChangeListenerCallback) => void;`
-Starts listen for the events of changing theme and handle with the provided callback
+Starts to listen for the events of changing theme and returns the provided callback:
 ```js
 xBeesConnect().onThemeChange((payload: any) => {
     const {mode, themeOptions: {typography, palette}} = payload;
@@ -147,7 +146,7 @@ xBeesConnect().onThemeChange((payload: any) => {
 ```
 
 #### `onPbxTokenChange: (callback: ListenerCallback) => void;`
-Starts listen for the events of changing pbx token and handle with the provided callback
+Starts to listen for the events of changing PBX token and returns the provided callback:
 ```js
 xBeesConnect().onPbxTokenChange((jwt: string) => {
     auth.setToken(jwt);
@@ -155,34 +154,36 @@ xBeesConnect().onPbxTokenChange((jwt: string) => {
 ```
 
 #### `onCallStarted: (callback: ListenerCallback) => void;`
-Starts listen for the events of starting the call and handle with the provided callback
+Starts to listen for the events of starting the call and returns the provided callback:
 ```js
 xBeesConnect().onCallStarted(() => {
+    // do smth when call was started
 })
 ```
 #### `onCallEnded: (callback: ListenerCallback) => void;`
-Starts listen for the events of ending the call and handle with the provided callback
+Starts to listen for the events of ending the call and returns the provided callback:
 ```js
 xBeesConnect().onCallEnded(() => {
+    // do smth when call was ended
 })
 ```
 #### `off: (callback: ListenerCallback) => void;`
-Removes particular callback from handling events
+Removes particular callback from handling events:
 ```js
 const onThemeChangeCallback = (payload: any) => {
     const {mode, themeOptions: {typography, palette}} = payload;
     changeTheme(mode, typography, palette);
 };
 
-xBeesConnect().onThemeChange(onThemeChangeCallback); // add subscription listener
-xBeesConnect().off(onThemeChangeCallback) // remove subscribed listener
+xBeesConnect().onThemeChange(onThemeChangeCallback); // subscribe a listener
+xBeesConnect().off(onThemeChangeCallback) // remove the subscribed listener
 ```
 
 
-## Others
+## Other
 #### `version(): string`
 
-Retrieves the version of xBeesConnect
+Retrieves the version of xBeesConnect:
 
 ```js
 const version = xBeesConnect().version();
@@ -191,19 +192,20 @@ console.log("Current xBeesConnect version: ", version);
 
 #### `startCall(phoneNumber: string)`
 
-Sends a request to xBees to start a call with the number
+Sends a request to x-bees to start a call with a number:
 
 ```js
 useEffect(() => {
     xBeesConnect().startCall().then((response) => {
-        // after call is started "response" message is 'call started'
-    }
+        // after the call is started, the "response" message is 'call started'
+    });
 }, []);
 ```
 
 #### `reboot()`
 
-Sends a request to xBees to restart the iFrame, reload with actual params and token
+Sends a request to x-bees to restart the iFrame, reload with actual parameters and token:
+
 ```js
 try {
     fetchData().then((response) => {
@@ -218,7 +220,7 @@ try {
 
 #### `setViewport({height: number; width: number})`
 
-Sends a request to xBees about the current frame size change
+Sends a request to x-bees about changes of the current frame size:
 
 ```js
 useEffect(() => {
@@ -231,7 +233,7 @@ useEffect(() => {
 
 #### `toClipboard(payload: string)`
 
-Sends a request to xBees to put a string to the user's clipboard
+Sends a request to x-bees to put a string to the user's clipboard:
 
 ```js
 xBeesConnect().toClipboard(somestring);
@@ -239,7 +241,7 @@ xBeesConnect().toClipboard(somestring);
 
 #### `addEventListener()`
 
-Starts listening for one of the events of the xBees and handles with the provided callback
+Starts listening for one of the x-bees events and returns the provided callback:
 
 ```js
 useEffect(() => {
@@ -258,7 +260,7 @@ useEffect(() => {
 
 #### `removeEventListener()`
 
-Stops listen for one of the events of the xBees with this particular callback
+Stops listening for one of the x-bees events with the particular callback:
 
 ```js
 useEffect(() => {
@@ -277,7 +279,7 @@ useEffect(() => {
 
 ### Response type
 
-some requests retrieve a response from xBees with data or message
+Some requests retrieve a response from x-bees with data or message:
 
 ```ts
 type Response = {
@@ -288,8 +290,7 @@ type Response = {
 };
 ```
 ### Known issues
-Using this function fixes cases when `String.replaceAll()` does not work in the mobile version.
-Most likely, this is some kind of WebView bug.
+The below function can fix cases when `String.replaceAll()` does not work in the mobile version. Most likely, this is some kind of WebView bug.
 ```ts
 function replaceAll(str: string, search: string, replace: string) {
     return str.split(search).join(replace);
