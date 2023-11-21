@@ -1,4 +1,7 @@
 # Integrations
+
+⚠️ **Deprecated: This library is no longer actively maintained. Please use the [new xbees-connect library](https://www.npmjs.com/package/@wildix/xbees-connect) for updated features and support.**
+
 ## Add a new integration
 You can use the following template project to start developing your integration: https://github.com/Wildix/iframe-xbees-template-react
 
